@@ -1,1 +1,0 @@
-# fastapi_test_for_karamoozi
