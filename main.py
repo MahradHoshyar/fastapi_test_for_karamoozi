@@ -22,7 +22,7 @@ def get_db():
 # application of students
 # -------------------------------------------------------------------------------------------------------
 
-@app.post("/students/", response_model=schemas.Student)
+@app.post("/students/create", response_model=schemas.Student)
 def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
     db_student = crud.get_student(db, student_id=student.id)
     # if db_student:
