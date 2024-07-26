@@ -1,16 +1,26 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 from models import engine
 import models
 import schemas
 
 
+# Student CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_student(db: Session(engine), student_id: int):
-    return db.scalars(select(models.Student).where(models.Student.id.in_([student_id])))
+    db_student = db.scalars(select(models.Student).where(models.Student.id == student_id))
+    if not [*db_student]:
+        return None
+    return db_student.one()
 
 
-def get_student_by_name(db: Session(engine), name: str):
-    return db.scalars(select(models.Student).where(models.Student.name.in_([name])))
+def get_student_by_name(db: Session(engine), student_name: str):
+    db_student = db.scalars(select(models.Student).where(models.Student.name == student_name))
+    if not [*db_student]:
+        return None
+    return db_student.one()
 
 
 def get_students(db: Session(engine)):
@@ -25,6 +35,16 @@ def create_student(db: Session(engine), student: schemas.StudentCreate):
     return db_student
 
 
+def update_student(db: Session(engine), student: schemas.StudentUpdate):
+    db_student = db.scalars(select(models.Student).where(models.Student.id == student.id)).one()
+    db_student.name = student.name
+    db_student.field = student.field
+    db_student.semester_no = student.semester_no
+    db.commit()
+    db_student = db.scalars(select(models.Student).where(models.Student.id == student.id))
+    return db_student
+
+
 def delete_student_by_id(db: Session(engine), student_id: int):
     db_student = db.get(models.Student, student_id)
     db.delete(db_student)
@@ -32,12 +52,22 @@ def delete_student_by_id(db: Session(engine), student_id: int):
     return db_student
 
 
+# Teacher CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_teacher(db: Session(engine), teacher_id: int):
-    return db.scalars(select(models.Teacher).where(models.Teacher.id.in_([teacher_id])))
+    db_teacher = db.scalars(select(models.Teacher).where(models.Teacher.id == teacher_id))
+    if not [*db_teacher]:
+        return None
+    return db_teacher.one()
 
 
-def get_teacher_by_name(db: Session(engine), name: str):
-    return db.scalars(select(models.Teacher).where(models.Teacher.name.in_([name])))
+def get_teacher_by_name(db: Session(engine), teacher_name: str):
+    db_teacher = db.scalars(select(models.Teacher).where(models.Teacher.name == teacher_name))
+    if not [*db_teacher]:
+        return None
+    return db_teacher.one()
 
 
 def get_teachers(db: Session(engine)):
@@ -59,8 +89,15 @@ def delete_teacher_by_id(db: Session(engine), teacher_id: int):
     return db_teacher
 
 
+# Prerequisite CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_prerequisite(db: Session(engine), prerequisite_id: int):
-    return db.scalars(select(models.Prerequisite).where(models.Prerequisite.id.in_([prerequisite_id])))
+    db_prerequisite = db.scalars(select(models.Prerequisite).where(models.Prerequisite.id == prerequisite_id))
+    if not [*db_prerequisite]:
+        return None
+    return db_prerequisite.one()
 
 
 def get_prerequisites(db: Session(engine)):
@@ -83,12 +120,22 @@ def delete_prerequisite_by_id(db: Session(engine), prerequisite_id: int):
     return db_prerequisite
 
 
+# Course CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_course(db: Session(engine), course_id: int):
-    return db.scalars(select(models.Course).where(models.Course.id.in_([course_id])))
+    db_course = db.scalars(select(models.Course).where(models.Course.id == course_id))
+    if not [*db_course]:
+        return None
+    return db_course.one()
 
 
-def get_course_by_name(db: Session(engine), name: str):
-    return db.scalars(select(models.Course).where(models.Course.name.in_([name])))
+def get_course_by_name(db: Session(engine), course_name: str):
+    db_course = db.scalars(select(models.Course).where(models.Course.name == course_name))
+    if not [*db_course]:
+        return None
+    return db_course.one()
 
 
 def get_courses(db: Session(engine)):
@@ -110,8 +157,15 @@ def delete_course_by_id(db: Session(engine), course_id: int):
     return db_course
 
 
+# Presentation CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_presentation(db: Session(engine), presentation_id: int):
-    return db.scalars(select(models.Presentation).where(models.Presentation.id.in_([presentation_id])))
+    db_presentation = db.scalars(select(models.Presentation).where(models.Presentation.id == presentation_id))
+    if not [*db_presentation]:
+        return None
+    return db_presentation.one()
 
 
 def get_presentations(db: Session(engine)):
@@ -134,12 +188,22 @@ def delete_presentation_by_id(db: Session(engine), presentation_id: int):
     return db_presentation
 
 
+# Class CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_class(db: Session(engine), class_id: int):
-    return db.scalars(select(models.Class).where(models.Class.id.in_([class_id])))
+    db_class = db.scalars(select(models.Class).where(models.Class.id == class_id))
+    if not [*db_class]:
+        return None
+    return db_class.one()
 
 
-def get_class_by_name(db: Session(engine), name: str):
-    return db.scalars(select(models.Class).where(models.Class.name.in_([name])))
+def get_class_by_name(db: Session(engine), class_name: str):
+    db_class = db.scalars(select(models.Class).where(models.Class.name == class_name))
+    if not [*db_class]:
+        return None
+    return db_class.one()
 
 
 def get_classes(db: Session(engine)):
@@ -161,8 +225,15 @@ def delete_class_by_id(db: Session(engine), class_id: int):
     return db_class
 
 
+# Schedule CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_schedule(db: Session(engine), schedule_id: int):
-    return db.scalars(select(models.Schedule).where(models.Schedule.id.in_([schedule_id])))
+    db_schedule = db.scalars(select(models.Schedule).where(models.Schedule.id == schedule_id))
+    if not [*db_schedule]:
+        return None
+    return db_schedule.one()
 
 
 def get_schedules(db: Session(engine)):
@@ -185,8 +256,15 @@ def delete_schedule_by_id(db: Session(engine), schedule_id: int):
     return db_schedule
 
 
+# Selected Course CRUD
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def get_selected_course(db: Session(engine), selected_course_id: int):
-    return db.scalars(select(models.SelectedCourse).where(models.SelectedCourse.id.in_([selected_course_id])))
+    db_selected_course = db.scalars(select(models.SelectedCourse).where(models.SelectedCourse.id == selected_course_id))
+    if not [*db_selected_course]:
+        return None
+    return db_selected_course.one()
 
 
 def get_selected_courses(db: Session(engine)):

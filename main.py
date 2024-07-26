@@ -25,8 +25,8 @@ def get_db():
 @app.post("/students/create", response_model=schemas.Student)
 def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
     db_student = crud.get_student(db, student_id=student.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_student:
+        raise HTTPException(status_code=400, detail="Student Id already registered")
     return crud.create_student(db=db, student=student)
 
 
@@ -36,15 +36,31 @@ def read_students(db: Session = Depends(get_db)):
     return students
 
 
-@app.get("/students/{student_id}", response_model=list[schemas.Student])
+@app.get("/students/{student_id}", response_model=schemas.Student)
 def read_student(student_id: int, db: Session = Depends(get_db)):
-    db_student = crud.get_student(db, student_id=student_id)
+    db_student = crud.get_student(db=db, student_id=student_id)
     if db_student is None:
         raise HTTPException(status_code=404, detail="student not found")
     return db_student
 
 
-@app.delete("/students/{student_id}")
+@app.get("/students/{student_name}", response_model=schemas.Student)
+def read_student_by_name(student_name: str, db: Session = Depends(get_db)):
+    db_student = crud.get_student_by_name(db=db, student_name=student_name)
+    if db_student is None:
+        raise HTTPException(status_code=404, detail="student not found")
+    return db_student
+
+
+@app.put("/student/update/{student_id}", response_model=list[schemas.Student])
+def update_student(student: schemas.StudentUpdate, db: Session = Depends(get_db)):
+    db_student = crud.get_student(db, student_id=student.id)
+    if db_student is None:
+        raise HTTPException(status_code=404, detail="!Student not found!")
+    return crud.update_student(db=db, student=student)
+
+
+@app.delete("/students/delete/{student_id}")
 def delete_student(student_id: int, db: Session = Depends(get_db)):
     crud.delete_student_by_id(db=db, student_id=student_id)
     return {"massage": f"student with id: {student_id} successfully deleted"}
@@ -53,11 +69,11 @@ def delete_student(student_id: int, db: Session = Depends(get_db)):
 # application of teachers
 # -------------------------------------------------------------------------------------------------------
 
-@app.post("/teacher/", response_model=schemas.Teacher)
+@app.post("/teacher/create", response_model=schemas.Teacher)
 def create_teacher(teacher: schemas.TeacherCreate, db: Session = Depends(get_db)):
     db_teacher = crud.get_teacher(db, teacher_id=teacher.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_teacher:
+        raise HTTPException(status_code=400, detail="teacher Id already registered")
     return crud.create_teacher(db=db, teacher=teacher)
 
 
@@ -67,7 +83,7 @@ def read_teachers(db: Session = Depends(get_db)):
     return teachers
 
 
-@app.get("/teachers/{teacher_id}", response_model=list[schemas.Teacher])
+@app.get("/teachers/{teacher_id}", response_model=schemas.Teacher)
 def read_teacher(teacher_id: int, db: Session = Depends(get_db)):
     db_teacher = crud.get_teacher(db, teacher_id=teacher_id)
     if db_teacher is None:
@@ -75,7 +91,15 @@ def read_teacher(teacher_id: int, db: Session = Depends(get_db)):
     return db_teacher
 
 
-@app.delete("/teachers/{teacher_id}")
+@app.get("/teacher/{teacher_name}", response_model=schemas.Teacher)
+def read_teacher_by_name(teacher_name: str, db: Session = Depends(get_db)):
+    db_teacher = crud.get_teacher_by_name(db=db, teacher_name=teacher_name)
+    if db_teacher is None:
+        raise HTTPException(status_code=404, detail="teacher not found")
+    return db_teacher
+
+
+@app.delete("/teachers/delete/{teacher_id}")
 def delete_teacher(teacher_id: int, db: Session = Depends(get_db)):
     crud.delete_teacher_by_id(db=db, teacher_id=teacher_id)
     return {"massage": f"teacher with id: {teacher_id} successfully deleted"}
@@ -84,11 +108,11 @@ def delete_teacher(teacher_id: int, db: Session = Depends(get_db)):
 # application of prerequisite
 # -------------------------------------------------------------------------------------------------------
 
-@app.post("/prerequisite/", response_model=schemas.Prerequisite)
+@app.post("/prerequisite/create", response_model=schemas.Prerequisite)
 def create_prerequisite(prerequisite: schemas.PrerequisiteCreate, db: Session = Depends(get_db)):
     db_prerequisite = crud.get_prerequisite(db, prerequisite_id=prerequisite.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_prerequisite:
+        raise HTTPException(status_code=400, detail="prerequisite Id already registered")
     return crud.create_prerequisite(db=db, prerequisite=prerequisite)
 
 
@@ -98,7 +122,7 @@ def read_prerequisites(db: Session = Depends(get_db)):
     return prerequisites
 
 
-@app.get("/prerequisite/{prerequisite_id}", response_model=list[schemas.Prerequisite])
+@app.get("/prerequisite/{prerequisite_id}", response_model=schemas.Prerequisite)
 def read_prerequisite(prerequisite_id: int, db: Session = Depends(get_db)):
     db_prerequisite = crud.get_prerequisite(db, prerequisite_id=prerequisite_id)
     if db_prerequisite is None:
@@ -106,7 +130,7 @@ def read_prerequisite(prerequisite_id: int, db: Session = Depends(get_db)):
     return db_prerequisite
 
 
-@app.delete("/prerequisite/{prerequisite_id}")
+@app.delete("/prerequisite/delete/{prerequisite_id}")
 def delete_prerequisite(prerequisite_id: int, db: Session = Depends(get_db)):
     crud.delete_prerequisite_by_id(db=db, prerequisite_id=prerequisite_id)
     return {"massage": f"prerequisite with id: {prerequisite_id} successfully deleted"}
@@ -116,11 +140,11 @@ def delete_prerequisite(prerequisite_id: int, db: Session = Depends(get_db)):
 # -------------------------------------------------------------------------------------------------------
 
 
-@app.post("/course/", response_model=schemas.Course)
+@app.post("/course/create", response_model=schemas.Course)
 def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
     db_course = crud.get_course(db, course_id=course.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_course:
+        raise HTTPException(status_code=400, detail="course Id already registered")
     return crud.create_course(db=db, course=course)
 
 
@@ -130,7 +154,7 @@ def read_courses(db: Session = Depends(get_db)):
     return courses
 
 
-@app.get("/course/{course_id}", response_model=list[schemas.CourseRelations])
+@app.get("/course/{course_id}", response_model=schemas.CourseRelations)
 def read_course(course_id: int, db: Session = Depends(get_db)):
     db_course = crud.get_course(db, course_id=course_id)
     if db_course is None:
@@ -138,7 +162,15 @@ def read_course(course_id: int, db: Session = Depends(get_db)):
     return db_course
 
 
-@app.delete("/course/{course_id}")
+@app.get("/course/{course_name}", response_model=schemas.Course)
+def read_course_by_name(course_name: str, db: Session = Depends(get_db)):
+    db_course = crud.get_course_by_name(db=db, course_name=course_name)
+    if db_course is None:
+        raise HTTPException(status_code=404, detail="course not found")
+    return db_course
+
+
+@app.delete("/course/delete/{course_id}")
 def delete_course(course_id: int, db: Session = Depends(get_db)):
     crud.delete_course_by_id(db=db, course_id=course_id)
     return {"massage": f"course with id: {course_id} successfully deleted"}
@@ -148,15 +180,15 @@ def delete_course(course_id: int, db: Session = Depends(get_db)):
 # -------------------------------------------------------------------------------------------------------
 
 
-@app.post("/presentation/", response_model=schemas.Presentation)
+@app.post("/presentation/create", response_model=schemas.Presentation)
 def create_presentation(presentation: schemas.PresentationCreate, db: Session = Depends(get_db)):
     db_presentation = crud.get_presentation(db, presentation_id=presentation.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_presentation:
+        raise HTTPException(status_code=400, detail="presentation Id already registered")
     return crud.create_presentation(db=db, presentation=presentation)
 
 
-@app.get("/presentation/{presentation_id}", response_model=list[schemas.Presentation])
+@app.get("/presentation/{presentation_id}", response_model=schemas.Presentation)
 def read_presentation(presentation_id: int, db: Session = Depends(get_db)):
     db_presentation = crud.get_presentation(db, presentation_id=presentation_id)
     if db_presentation is None:
@@ -164,7 +196,7 @@ def read_presentation(presentation_id: int, db: Session = Depends(get_db)):
     return db_presentation
 
 
-@app.delete("/presentation/{presentation_id}")
+@app.delete("/presentation/delete/{presentation_id}")
 def delete_presentation(presentation_id: int, db: Session = Depends(get_db)):
     crud.delete_presentation_by_id(db=db, presentation_id=presentation_id)
     return {"massage": f"presentation with id: {presentation_id} successfully deleted"}
@@ -174,11 +206,11 @@ def delete_presentation(presentation_id: int, db: Session = Depends(get_db)):
 # -------------------------------------------------------------------------------------------------------
 
 
-@app.post("/class/", response_model=schemas.Class)
+@app.post("/class/create", response_model=schemas.Class)
 def create_class(class_: schemas.ClassCreate, db: Session = Depends(get_db)):
     db_class = crud.get_class(db, class_id=class_.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_class:
+        raise HTTPException(status_code=400, detail="class Id already registered")
     return crud.create_class(db=db, class_=class_)
 
 
@@ -188,7 +220,7 @@ def read_classes(db: Session = Depends(get_db)):
     return classes
 
 
-@app.get("/class/{class_id}", response_model=list[schemas.Class])
+@app.get("/class/{class_id}", response_model=schemas.Class)
 def read_class(class_id: int, db: Session = Depends(get_db)):
     db_class = crud.get_class(db, class_id=class_id)
     if db_class is None:
@@ -196,7 +228,15 @@ def read_class(class_id: int, db: Session = Depends(get_db)):
     return db_class
 
 
-@app.delete("/class/{class_id}")
+@app.get("/class/{class_name}", response_model=schemas.Class)
+def read_class_by_name(class_name: str, db: Session = Depends(get_db)):
+    db_class = crud.get_class_by_name(db=db, class_name=class_name)
+    if db_class is None:
+        raise HTTPException(status_code=404, detail="student not found")
+    return db_class
+
+
+@app.delete("/class/delete/{class_id}")
 def delete_class(class_id: int, db: Session = Depends(get_db)):
     crud.delete_class_by_id(db=db, class_id=class_id)
     return {"massage": f"class with id: {class_id} successfully deleted"}
@@ -206,15 +246,15 @@ def delete_class(class_id: int, db: Session = Depends(get_db)):
 # -------------------------------------------------------------------------------------------------------
 
 
-@app.post("/schedule/", response_model=schemas.Schedule)
+@app.post("/schedule/create", response_model=schemas.Schedule)
 def create_schedule(schedule: schemas.ScheduleCreate, db: Session = Depends(get_db)):
     db_schedule = crud.get_schedule(db, schedule_id=schedule.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    if db_schedule:
+        raise HTTPException(status_code=400, detail="schedule Id already registered")
     return crud.create_schedule(db=db, schedule=schedule)
 
 
-@app.get("/schedule/{schedule_id}", response_model=list[schemas.Schedule])
+@app.get("/schedule/{schedule_id}", response_model=schemas.Schedule)
 def read_schedule(schedule_id: int, db: Session = Depends(get_db)):
     db_schedule = crud.get_schedule(db, schedule_id=schedule_id)
     if db_schedule is None:
@@ -222,7 +262,7 @@ def read_schedule(schedule_id: int, db: Session = Depends(get_db)):
     return db_schedule
 
 
-@app.delete("/schedule/{schedule_id}")
+@app.delete("/schedule/delete/{schedule_id}")
 def delete_schedule(schedule_id: int, db: Session = Depends(get_db)):
     crud.delete_schedule_by_id(db=db, schedule_id=schedule_id)
     return {"massage": f"schedule with id: {schedule_id} successfully deleted"}
@@ -232,15 +272,15 @@ def delete_schedule(schedule_id: int, db: Session = Depends(get_db)):
 # -------------------------------------------------------------------------------------------------------
 
 
-@app.post("/selected_course/", response_model=schemas.SelectedCourse)
+@app.post("/selected_course/create", response_model=schemas.SelectedCourse)
 def create_selected_course(selected_course: schemas.SelectedCourseCreate, db: Session = Depends(get_db)):
-    db_schedule = crud.get_selected_course(db, selected_course_id=selected_course.id)
-    # if db_student:
-    #     raise HTTPException(status_code=400, detail="Student Id already registered")
+    db_selected_course = crud.get_selected_course(db, selected_course_id=selected_course.id)
+    if db_selected_course:
+        raise HTTPException(status_code=400, detail="selected course Id already registered")
     return crud.create_selected_course(db=db, selected_course=selected_course)
 
 
-@app.get("/selected_course/{selected_course_id}", response_model=list[schemas.SelectedCourse])
+@app.get("/selected_course/{selected_course_id}", response_model=schemas.SelectedCourse)
 def read_selected_course(selected_course_id: int, db: Session = Depends(get_db)):
     db_selected_course = crud.get_selected_course(db, selected_course_id=selected_course_id)
     if db_selected_course is None:
@@ -248,7 +288,7 @@ def read_selected_course(selected_course_id: int, db: Session = Depends(get_db))
     return db_selected_course
 
 
-@app.delete("/selected_course/{selected_course_id}")
+@app.delete("/selected_course/delete/{selected_course_id}")
 def delete_selected_course(selected_course_id: int, db: Session = Depends(get_db)):
     crud.delete_selected_course_by_id(db=db, selected_course_id=selected_course_id)
     return {"massage": f"selected course with id: {selected_course_id} successfully deleted"}

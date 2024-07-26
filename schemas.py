@@ -12,6 +12,10 @@ class StudentCreate(Student):
     pass
 
 
+class StudentUpdate(Student):
+    pass
+
+
 class Teacher(BaseModel):
     id: int
     name: str
