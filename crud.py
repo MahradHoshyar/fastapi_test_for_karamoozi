@@ -13,14 +13,14 @@ def get_student(db: Session(engine), student_id: int):
     db_student = db.scalars(select(models.Student).where(models.Student.id == student_id))
     if not [*db_student]:
         return None
-    return db_student.one()
+    return db.scalars(select(models.Student).where(models.Student.id == student_id)).one()
 
 
 def get_student_by_name(db: Session(engine), student_name: str):
     db_student = db.scalars(select(models.Student).where(models.Student.name == student_name))
     if not [*db_student]:
         return None
-    return db_student.one()
+    return db.scalars(select(models.Student).where(models.Student.name == student_name)).one()
 
 
 def get_students(db: Session(engine)):
@@ -60,14 +60,14 @@ def get_teacher(db: Session(engine), teacher_id: int):
     db_teacher = db.scalars(select(models.Teacher).where(models.Teacher.id == teacher_id))
     if not [*db_teacher]:
         return None
-    return db_teacher.one()
+    return db.scalars(select(models.Teacher).where(models.Teacher.id == teacher_id)).one()
 
 
 def get_teacher_by_name(db: Session(engine), teacher_name: str):
     db_teacher = db.scalars(select(models.Teacher).where(models.Teacher.name == teacher_name))
     if not [*db_teacher]:
         return None
-    return db_teacher.one()
+    return db.scalars(select(models.Teacher).where(models.Teacher.name == teacher_name)).one()
 
 
 def get_teachers(db: Session(engine)):
@@ -97,7 +97,7 @@ def get_prerequisite(db: Session(engine), prerequisite_id: int):
     db_prerequisite = db.scalars(select(models.Prerequisite).where(models.Prerequisite.id == prerequisite_id))
     if not [*db_prerequisite]:
         return None
-    return db_prerequisite.one()
+    return db.scalars(select(models.Prerequisite).where(models.Prerequisite.id == prerequisite_id)).one()
 
 
 def get_prerequisites(db: Session(engine)):
@@ -128,14 +128,14 @@ def get_course(db: Session(engine), course_id: int):
     db_course = db.scalars(select(models.Course).where(models.Course.id == course_id))
     if not [*db_course]:
         return None
-    return db_course.one()
+    return db.scalars(select(models.Course).where(models.Course.id == course_id)).one()
 
 
 def get_course_by_name(db: Session(engine), course_name: str):
     db_course = db.scalars(select(models.Course).where(models.Course.name == course_name))
     if not [*db_course]:
         return None
-    return db_course.one()
+    return db.scalars(select(models.Course).where(models.Course.id == course_name)).one()
 
 
 def get_courses(db: Session(engine)):
@@ -165,7 +165,7 @@ def get_presentation(db: Session(engine), presentation_id: int):
     db_presentation = db.scalars(select(models.Presentation).where(models.Presentation.id == presentation_id))
     if not [*db_presentation]:
         return None
-    return db_presentation.one()
+    return db.scalars(select(models.Presentation).where(models.Presentation.id == presentation_id)).one()
 
 
 def get_presentations(db: Session(engine)):
@@ -196,14 +196,14 @@ def get_class(db: Session(engine), class_id: int):
     db_class = db.scalars(select(models.Class).where(models.Class.id == class_id))
     if not [*db_class]:
         return None
-    return db_class.one()
+    return db.scalars(select(models.Class).where(models.Class.id == class_id)).one()
 
 
 def get_class_by_name(db: Session(engine), class_name: str):
     db_class = db.scalars(select(models.Class).where(models.Class.name == class_name))
     if not [*db_class]:
         return None
-    return db_class.one()
+    return db.scalars(select(models.Class).where(models.Class.id == class_name)).one()
 
 
 def get_classes(db: Session(engine)):
@@ -233,7 +233,7 @@ def get_schedule(db: Session(engine), schedule_id: int):
     db_schedule = db.scalars(select(models.Schedule).where(models.Schedule.id == schedule_id))
     if not [*db_schedule]:
         return None
-    return db_schedule.one()
+    return db.scalars(select(models.Schedule).where(models.Schedule.id == schedule_id)).one()
 
 
 def get_schedules(db: Session(engine)):
@@ -264,7 +264,7 @@ def get_selected_course(db: Session(engine), selected_course_id: int):
     db_selected_course = db.scalars(select(models.SelectedCourse).where(models.SelectedCourse.id == selected_course_id))
     if not [*db_selected_course]:
         return None
-    return db_selected_course.one()
+    return db.scalars(select(models.SelectedCourse).where(models.SelectedCourse.id == selected_course_id)).one()
 
 
 def get_selected_courses(db: Session(engine)):
