@@ -52,11 +52,11 @@ def read_student_by_name(student_name: str, db: Session = Depends(get_db)):
     return db_student
 
 
-@app.put("/student/update/{student_id}", response_model=list[schemas.Student])
+@app.put("/student/update/{student_id}", response_model=schemas.Student)
 def update_student(student: schemas.StudentUpdate, db: Session = Depends(get_db)):
     db_student = crud.get_student(db, student_id=student.id)
     if db_student is None:
-        raise HTTPException(status_code=404, detail="!Student not found!")
+        raise HTTPException(status_code=404, detail="Student not found!")
     return crud.update_student(db=db, student=student)
 
 
@@ -99,6 +99,14 @@ def read_teacher_by_name(teacher_name: str, db: Session = Depends(get_db)):
     return db_teacher
 
 
+@app.put("/teacher/update/{teacher_id}", response_model=schemas.Teacher)
+def update_teacher(teacher: schemas.TeacherUpdate, db: Session = Depends(get_db)):
+    db_teacher = crud.get_teacher(db, teacher_id=teacher.id)
+    if db_teacher is None:
+        raise HTTPException(status_code=404, detail="teacher not found!")
+    return crud.update_teacher(db=db, teacher=teacher)
+
+
 @app.delete("/teachers/delete/{teacher_id}")
 def delete_teacher(teacher_id: int, db: Session = Depends(get_db)):
     crud.delete_teacher_by_id(db=db, teacher_id=teacher_id)
@@ -128,6 +136,14 @@ def read_prerequisite(prerequisite_id: int, db: Session = Depends(get_db)):
     if db_prerequisite is None:
         raise HTTPException(status_code=404, detail="prerequisite not found")
     return db_prerequisite
+
+
+@app.put("/prerequisite/update/{prerequisite_id}", response_model=schemas.Prerequisite)
+def update_prerequisite(prerequisite: schemas.PrerequisiteUpdate, db: Session = Depends(get_db)):
+    db_prerequisite = crud.get_prerequisite(db, prerequisite_id=prerequisite.id)
+    if db_prerequisite is None:
+        raise HTTPException(status_code=404, detail="prerequisite not found!")
+    return crud.update_prerequisite(db=db, prerequisite=prerequisite)
 
 
 @app.delete("/prerequisite/delete/{prerequisite_id}")
@@ -170,6 +186,14 @@ def read_course_by_name(course_name: str, db: Session = Depends(get_db)):
     return db_course
 
 
+@app.put("/course/update/{course_id}", response_model=schemas.Course)
+def update_course(course: schemas.CourseUpdate, db: Session = Depends(get_db)):
+    db_course = crud.get_course(db, course_id=course.id)
+    if db_course is None:
+        raise HTTPException(status_code=404, detail="course not found!")
+    return crud.update_course(db=db, course=course)
+
+
 @app.delete("/course/delete/{course_id}")
 def delete_course(course_id: int, db: Session = Depends(get_db)):
     crud.delete_course_by_id(db=db, course_id=course_id)
@@ -194,6 +218,14 @@ def read_presentation(presentation_id: int, db: Session = Depends(get_db)):
     if db_presentation is None:
         raise HTTPException(status_code=404, detail="presentation not found")
     return db_presentation
+
+
+@app.put("/presentation/update/{presentation_id}", response_model=schemas.Presentation)
+def update_presentation(presentation: schemas.PresentationUpdate, db: Session = Depends(get_db)):
+    db_presentation = crud.get_presentation(db, presentation_id=presentation.id)
+    if db_presentation is None:
+        raise HTTPException(status_code=404, detail="presentation not found!")
+    return crud.update_presentation(db=db, presentation=presentation)
 
 
 @app.delete("/presentation/delete/{presentation_id}")
@@ -236,6 +268,14 @@ def read_class_by_name(class_name: str, db: Session = Depends(get_db)):
     return db_class
 
 
+@app.put("/class/update/{class_id}", response_model=schemas.Class)
+def update_class(class_: schemas.ClassUpdate, db: Session = Depends(get_db)):
+    db_class = crud.get_class(db, class_id=class_.id)
+    if db_class is None:
+        raise HTTPException(status_code=404, detail="class not found!")
+    return crud.update_class(db=db, class_=class_)
+
+
 @app.delete("/class/delete/{class_id}")
 def delete_class(class_id: int, db: Session = Depends(get_db)):
     crud.delete_class_by_id(db=db, class_id=class_id)
@@ -262,6 +302,14 @@ def read_schedule(schedule_id: int, db: Session = Depends(get_db)):
     return db_schedule
 
 
+@app.put("/schedule/update/{schedule_id}", response_model=schemas.Schedule)
+def update_schedule(schedule: schemas.ScheduleUpdate, db: Session = Depends(get_db)):
+    db_schedule = crud.get_schedule(db, schedule_id=schedule.id)
+    if db_schedule is None:
+        raise HTTPException(status_code=404, detail="schedule not found!")
+    return crud.update_schedule(db=db, schedule=schedule)
+
+
 @app.delete("/schedule/delete/{schedule_id}")
 def delete_schedule(schedule_id: int, db: Session = Depends(get_db)):
     crud.delete_schedule_by_id(db=db, schedule_id=schedule_id)
@@ -286,6 +334,14 @@ def read_selected_course(selected_course_id: int, db: Session = Depends(get_db))
     if db_selected_course is None:
         raise HTTPException(status_code=404, detail="selected course not found")
     return db_selected_course
+
+
+@app.put("/selected_course/update/{selected_course_id}", response_model=schemas.SelectedCourse)
+def update_selected_course(selected_course: schemas.SelectedCourseUpdate, db: Session = Depends(get_db)):
+    db_selected_course = crud.get_selected_course(db, selected_course_id=selected_course.id)
+    if db_selected_course is None:
+        raise HTTPException(status_code=404, detail="selected course not found!")
+    return crud.update_selected_course(db=db, selected_course=selected_course)
 
 
 @app.delete("/selected_course/delete/{selected_course_id}")

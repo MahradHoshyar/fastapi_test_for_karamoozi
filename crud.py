@@ -1,4 +1,4 @@
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from models import engine
 import models
@@ -41,7 +41,6 @@ def update_student(db: Session(engine), student: schemas.StudentUpdate):
     db_student.field = student.field
     db_student.semester_no = student.semester_no
     db.commit()
-    db_student = db.scalars(select(models.Student).where(models.Student.id == student.id))
     return db_student
 
 
@@ -82,6 +81,14 @@ def create_teacher(db: Session(engine), teacher: schemas.TeacherCreate):
     return db_teacher
 
 
+def update_teacher(db: Session(engine), teacher: schemas.TeacherUpdate):
+    db_teacher = db.scalars(select(models.Teacher).where(models.Teacher.id == teacher.id)).one()
+    db_teacher.name = teacher.name
+    db_teacher.profession = teacher.profession
+    db.commit()
+    return db_teacher
+
+
 def delete_teacher_by_id(db: Session(engine), teacher_id: int):
     db_teacher = db.get(models.Teacher, teacher_id)
     db.delete(db_teacher)
@@ -110,6 +117,14 @@ def create_prerequisite(db: Session(engine), prerequisite: schemas.PrerequisiteC
     db.add(db_prerequisite)
     db.commit()
     db.refresh(db_prerequisite)
+    return db_prerequisite
+
+
+def update_prerequisite(db: Session(engine), prerequisite: schemas.PrerequisiteUpdate):
+    db_prerequisite = db.scalars(select(models.Prerequisite).where(models.Prerequisite.id == prerequisite.id)).one()
+    db_prerequisite.main_course_id = prerequisite.main_course_id
+    db_prerequisite.prerequisite_id = prerequisite.prerequisite_id
+    db.commit()
     return db_prerequisite
 
 
@@ -150,6 +165,13 @@ def create_course(db: Session(engine), course: schemas.CourseCreate):
     return db_course
 
 
+def update_course(db: Session(engine), course: schemas.CourseUpdate):
+    db_course = db.scalars(select(models.Course).where(models.Course.id == course.id)).one()
+    db_course.name = course.name
+    db.commit()
+    return db_course
+
+
 def delete_course_by_id(db: Session(engine), course_id: int):
     db_course = db.get(models.Course, course_id)
     db.delete(db_course)
@@ -178,6 +200,15 @@ def create_presentation(db: Session(engine), presentation: schemas.PresentationC
     db.add(db_presentation)
     db.commit()
     db.refresh(db_presentation)
+    return db_presentation
+
+
+def update_presentation(db: Session(engine), presentation: schemas.PresentationUpdate):
+    db_presentation = db.scalars(select(models.Presentation).where(models.Presentation.id == presentation.id)).one()
+    db_presentation.course_id = presentation.course_id
+    db_presentation.teacher_id = presentation.teacher_id
+    db_presentation.time = presentation.time
+    db.commit()
     return db_presentation
 
 
@@ -218,6 +249,13 @@ def create_class(db: Session(engine), class_: schemas.ClassCreate):
     return db_class
 
 
+def update_class(db: Session(engine), class_: schemas.ClassUpdate):
+    db_class = db.scalars(select(models.Class).where(models.Class.id == class_.id)).one()
+    db_class.name = class_.name
+    db.commit()
+    return db_class
+
+
 def delete_class_by_id(db: Session(engine), class_id: int):
     db_class = db.get(models.Class, class_id)
     db.delete(db_class)
@@ -249,6 +287,15 @@ def create_schedule(db: Session(engine), schedule: schemas.ScheduleCreate):
     return db_schedule
 
 
+def update_schedule(db: Session(engine), schedule: schemas.ScheduleUpdate):
+    db_schedule = db.scalars(select(models.Schedule).where(models.Schedule.id == schedule.id)).one()
+    db_schedule.presentation_id = schedule.presentation_id
+    db_schedule.class_id = schedule.class_id
+    db_schedule.time = schedule.time
+    db.commit()
+    return db_schedule
+
+
 def delete_schedule_by_id(db: Session(engine), schedule_id: int):
     db_schedule = db.get(models.Schedule, schedule_id)
     db.delete(db_schedule)
@@ -277,6 +324,15 @@ def create_selected_course(db: Session(engine), selected_course: schemas.Selecte
     db.add(db_selected_course)
     db.commit()
     db.refresh(db_selected_course)
+    return db_selected_course
+
+
+def update_selected_course(db: Session(engine), selected_course: schemas.SelectedCourseUpdate):
+    db_selected_course = db.scalars(select(models.SelectedCourse).where(
+        models.SelectedCourse.id == selected_course.id)).one()
+    db_selected_course.student_id = selected_course.student_id
+    db_selected_course.presentation_id = selected_course.presentation_id
+    db.commit()
     return db_selected_course
 
 

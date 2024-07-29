@@ -1,18 +1,11 @@
-from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from sqlalchemy import Column
-from sqlalchemy import Table
 from sqlalchemy import Integer
-from typing import List
-from typing import Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
-from sqlalchemy import select
-from sqlalchemy import MetaData
 from sqlalchemy.orm import sessionmaker
 
 
@@ -131,5 +124,3 @@ class SelectedCourse(Base):
     def __repr__(self) -> str:
         return (f"Selected Course(id={self.id!r}, student id={self.student_id!r},"
                 f" presentation id={self.presentation_id!r})")
-
-
