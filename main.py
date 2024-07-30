@@ -44,7 +44,7 @@ def read_student(student_id: int, db: Session = Depends(get_db)):
     return db_student
 
 
-@app.get("/students/{student_name}", response_model=schemas.Student)
+@app.get("/students/read_student_by_name/{student_name}", response_model=schemas.Student)
 def read_student_by_name(student_name: str, db: Session = Depends(get_db)):
     db_student = crud.get_student_by_name(db=db, student_name=student_name)
     if db_student is None:
@@ -91,7 +91,7 @@ def read_teacher(teacher_id: int, db: Session = Depends(get_db)):
     return db_teacher
 
 
-@app.get("/teacher/{teacher_name}", response_model=schemas.Teacher)
+@app.get("/teacher/read_teacher_by_name/{teacher_name}", response_model=schemas.Teacher)
 def read_teacher_by_name(teacher_name: str, db: Session = Depends(get_db)):
     db_teacher = crud.get_teacher_by_name(db=db, teacher_name=teacher_name)
     if db_teacher is None:
@@ -178,7 +178,7 @@ def read_course(course_id: int, db: Session = Depends(get_db)):
     return db_course
 
 
-@app.get("/course/{course_name}", response_model=schemas.Course)
+@app.get("/course/read_course_by_name/{course_name}", response_model=schemas.Course)
 def read_course_by_name(course_name: str, db: Session = Depends(get_db)):
     db_course = crud.get_course_by_name(db=db, course_name=course_name)
     if db_course is None:
@@ -260,7 +260,7 @@ def read_class(class_id: int, db: Session = Depends(get_db)):
     return db_class
 
 
-@app.get("/class/{class_name}", response_model=schemas.Class)
+@app.get("/class/read_class_by_name/{class_name}", response_model=schemas.Class)
 def read_class_by_name(class_name: str, db: Session = Depends(get_db)):
     db_class = crud.get_class_by_name(db=db, class_name=class_name)
     if db_class is None:
