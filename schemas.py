@@ -22,7 +22,11 @@ class Teacher(BaseModel):
     profession: str
 
 
-class TeacherCreate(Student):
+class TeacherCreate(Teacher):
+    pass
+
+
+class TeacherUpdate(Teacher):
     pass
 
 
@@ -39,6 +43,10 @@ class PrerequisiteCreate(Prerequisite):
     pass
 
 
+class PrerequisiteUpdate(Prerequisite):
+    pass
+
+
 class Course(BaseModel):
     id: int
     name: str
@@ -48,6 +56,10 @@ class Course(BaseModel):
 
 
 class CourseCreate(Course):
+    pass
+
+
+class CourseUpdate(Course):
     pass
 
 
@@ -65,6 +77,10 @@ class PresentationCreate(Presentation):
     pass
 
 
+class PresentationUpdate(Presentation):
+    pass
+
+
 class Class(BaseModel):
     id: int
     name: str
@@ -74,6 +90,10 @@ class Class(BaseModel):
 
 
 class ClassCreate(Class):
+    pass
+
+
+class ClassUpdate(Class):
     pass
 
 
@@ -91,6 +111,10 @@ class ScheduleCreate(Schedule):
     pass
 
 
+class ScheduleUpdate(Schedule):
+    pass
+
+
 class SelectedCourse(BaseModel):
     id: int
     student_id: int
@@ -101,6 +125,10 @@ class SelectedCourse(BaseModel):
 
 
 class SelectedCourseCreate(SelectedCourse):
+    pass
+
+
+class SelectedCourseUpdate(SelectedCourse):
     pass
 
 
